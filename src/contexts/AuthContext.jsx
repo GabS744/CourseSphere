@@ -1,7 +1,5 @@
-// Importa o React e os hooks
 import React, { createContext, useState, useContext } from "react";
 
-//Importa o axios para chamadas API
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -18,15 +16,15 @@ export function AuthProvider({ children }) {
 
       if (foundUser) {
         setUser(foundUser);
-        return foundUser; // <-- MUDANÇA AQUI: Retorna o usuário em vez de true
+        return foundUser;
       } else {
         alert("E-mail ou senha incorretos.");
-        return null; // <-- MUDANÇA AQUI: Retorna null em vez de false
+        return null;
       }
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
       alert("Ocorreu um erro no servidor. Tente novamente mais tarde.");
-      return null; // <-- MUDANÇA AQUI: Retorna null em vez de false
+      return null;
     }
   };
 

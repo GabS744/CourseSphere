@@ -13,10 +13,10 @@
       "password": "ana456"
     },
     {
-        "id": 3,
-        "name": "Marcos Silva",
-        "email": "marcos987@gmail.com",
-        "password": "marcos789"
+      "id": 3,
+      "name": "Marcos Silva",
+      "email": "marcos987@gmail.com",
+      "password": "marcos789"
     }
   ],
   "courses": [

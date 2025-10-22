@@ -1,4 +1,3 @@
-// src/components/1-atoms/Input.jsx
 import React from "react";
 
 function Input({ type = "text", placeholder, value, onChange }) {
