@@ -1,4 +1,3 @@
-import React from "react";
 import LoginForm from "../components/3-organisms/LoginForm";
 
 function LoginPage() {

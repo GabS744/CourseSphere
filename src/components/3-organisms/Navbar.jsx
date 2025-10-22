@@ -1,8 +1,7 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 
-function Navbar() {
+function Navbar({ onOpenCreateModal }) {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -27,12 +26,12 @@ function Navbar() {
               >
                 Meus Cursos
               </Link>
-              <Link
-                to="/cursos/novo"
+              <button
+                onClick={onOpenCreateModal}
                 className="px-4 py-2 text-white bg-[#34D399] rounded-lg hover:bg-green-600 font-bold"
               >
                 Criar novo Curso
-              </Link>
+              </button>
               <div className="flex items-center">
                 <span className="text-gray-600">Olá, {user.name}</span>
                 <button

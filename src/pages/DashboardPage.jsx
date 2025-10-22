@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getCourses } from "../services/courseService.js";
 import CourseCard from "../components/3-organisms/CourseCard.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";

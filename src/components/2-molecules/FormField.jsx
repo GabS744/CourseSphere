@@ -1,4 +1,3 @@
-import React from "react";
 import Label from "../1-atoms/Label";
 import Input from "../1-atoms/Input";
 

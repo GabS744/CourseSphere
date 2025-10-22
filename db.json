@@ -1,19 +1,19 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Gabriel Sousa",
       "email": "gabriel321@gmail.com",
       "password": "gabriel123"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Ana Luiza",
       "email": "ana654@email.com",
       "password": "ana456"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Marcos Silva",
       "email": "marcos987@gmail.com",
       "password": "marcos789"
@@ -21,7 +21,7 @@
   ],
   "courses": [
     {
-      "id": 1,
+      "id": "1",
       "name": "React Avançado 2025",
       "description": "Um curso para aprofundar os conhecimentos em React.",
       "start_date": "2025-11-01",
@@ -30,7 +30,7 @@
       "instructors": [1, 2]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Introdução ao Python",
       "description": "Curso para iniciantes na linguagem Python.",
       "start_date": "2025-11-10",
@@ -41,7 +41,7 @@
   ],
   "lessons": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Hooks Personalizados",
       "status": "published",
       "publish_date": "2025-11-05",
@@ -50,7 +50,7 @@
       "creator_id": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Gerenciamento de Estado",
       "status": "draft",
       "publish_date": "2025-11-10",
