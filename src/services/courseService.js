@@ -9,3 +9,7 @@ export const getCourses = async () => {
 export const createCourse = (courseData) => {
   return axios.post(`${API_URL}/courses`, courseData);
 };
+
+export const getCourseById = (id) => {
+  return axios.get(`${API_URL}/courses/${id}`);
+};

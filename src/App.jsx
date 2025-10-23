@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
+import CourseDetailPage from "./pages/CourseDetailPage.jsx";
 
 import Navbar from "./components/3-organisms/Navbar.jsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
@@ -39,6 +40,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route element={<ProtectedRoute />}>
           <Route index element={<DashboardPage />} />
+          <Route path="cursos/:courseId" element={<CourseDetailPage />} />
         </Route>
       </Route>
     </Routes>
