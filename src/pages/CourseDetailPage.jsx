@@ -1,67 +1,130 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCourseById } from "../services/courseService.js";
-
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { useCourseData } from "../hooks/useCourseData.js";
+import { useCourseActions } from "../hooks/useCourseActions.js";
+import { useInstructorManagement } from "../hooks/useInstructorManagement.js";
 import TabNavigation from "../components/3-organisms/TabNavigation.jsx";
-import InstructorsTab from "../components/4-templates/InstructorsTab.jsx";
 import CourseDataTab from "../components/4-templates/CourseDataTab.jsx";
-import LessonListItem from "../components/3-organisms/LessonListItem.jsx";
+import InstructorsTab from "../components/4-templates/InstructorsTab.jsx";
 import LessonsTab from "../components/4-templates/LessonsTab.jsx";
+import EditCourseModal from "../components/3-organisms/EditCourseModal.jsx";
+import ConfirmationModal from "../components/3-organisms/ConfirmationModal.jsx";
+import ManageInstructorsModal from "../components/3-organisms/ManageInstructorsModal.jsx";
+import Button from "../components/1-atoms/Button.jsx";
 
 function CourseDetailPage() {
   const { courseId } = useParams();
+  const { user } = useAuth();
 
-  const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    course,
+    instructors,
+    loading,
+    error,
+    fetchCourseData,
+    setCourse,
+    setInstructors,
+  } = useCourseData(courseId);
+  const {
+    isEditModalOpen,
+    isDeleteModalOpen,
+    openEditModal,
+    closeEditModal,
+    openDeleteModal,
+    closeDeleteModal,
+    confirmDeleteCourse,
+  } = useCourseActions(course);
+  const {
+    isManageModalOpen,
+    instructorToRemove,
+    suggestions,
+    suggestionsLoading,
+    openManageModal,
+    closeManageModal,
+    addInstructor,
+    removeInstructor,
+    confirmRemoveInstructor,
+    closeConfirmRemoveModal,
+  } = useInstructorManagement(course, setCourse, setInstructors);
+
   const [activeTab, setActiveTab] = useState("dados");
 
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        setLoading(true);
-        const response = await getCourseById(courseId);
-        setCourse(response.data);
-      } catch (err) {
-        setError("Falha ao carregar os detalhes do curso.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const isCreator = user && course && user.id == course.creator_id;
 
-    fetchCourse();
-  }, [courseId]);
-
-  if (loading) return <p>Carregando detalhes do curso...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading) return <p className="p-8">Carregando...</p>;
+  if (error) return <p className="p-8 text-red-500">{error}</p>;
+  if (!course) return <p className="p-8">Curso não encontrado.</p>;
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-800">{course.name}</h1>
-        <div className="flex space-x-2">
-          <button className="px-5 py-2 text-white font-bold bg-[#34D399] rounded-lg shadow-md hover:bg-green-600">
-            Editar Curso
-          </button>
-          <button className="px-5 py-2 text-white font-bold bg-red-500 rounded-lg shadow-md hover:bg-red-600">
-            Excluir Curso
-          </button>
+    <>
+      <div>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800">{course.name}</h1>
+          {isCreator && (
+            <div className="flex space-x-4">
+              <Button onClick={openEditModal} variant="primary">
+                Editar Curso
+              </Button>
+              <Button onClick={openDeleteModal} variant="danger">
+                Excluir Curso
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <div className="flex space-x-8">
+          <div className="w-1/4">
+            <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+          </div>
+          <div className="w-3/4">
+            {activeTab === "dados" && <CourseDataTab course={course} />}
+            {activeTab === "instrutores" && (
+              <InstructorsTab
+                course={course}
+                instructors={instructors}
+                isCreator={isCreator}
+                onRemove={removeInstructor}
+                onManage={openManageModal}
+              />
+            )}
+            {activeTab === "aulas" && <LessonsTab course={course} />}
+          </div>
         </div>
       </div>
 
-      <div className="flex space-x-8">
-        <div className="w-1/4">
-          <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-        </div>
-
-        <div className="w-3/4">
-          {activeTab === "dados" && <CourseDataTab course={course} />}
-          {activeTab === "instrutores" && <InstructorsTab course={course} />}
-          {activeTab === "aulas" && <LessonsTab course={course} />}
-        </div>
-      </div>
-    </div>
+      {isEditModalOpen && (
+        <EditCourseModal
+          course={course}
+          onClose={closeEditModal}
+          onUpdate={fetchCourseData}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <ConfirmationModal
+          title="Confirmar Exclusão de Curso"
+          message={`Tem certeza que deseja excluir o curso "${course.name}"?`}
+          onConfirm={confirmDeleteCourse}
+          onClose={closeDeleteModal}
+        />
+      )}
+      {isManageModalOpen && (
+        <ManageInstructorsModal
+          suggestions={suggestions}
+          loading={suggestionsLoading}
+          onClose={closeManageModal}
+          onAddInstructor={addInstructor}
+        />
+      )}
+      {instructorToRemove && (
+        <ConfirmationModal
+          title="Confirmar Remoção de Instrutor"
+          message="Tem certeza que deseja remover este instrutor do curso?"
+          onConfirm={confirmRemoveInstructor}
+          onClose={closeConfirmRemoveModal}
+        />
+      )}
+    </>
   );
 }
 
