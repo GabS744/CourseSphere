@@ -1,21 +1,29 @@
-function InstructorCard({ instructor }) {
+import React from "react";
+
+function InstructorCard({ instructor, isCreator, onRemove }) {
   const displayName =
     typeof instructor.name === "string"
       ? instructor.name
       : `${instructor.name.first} ${instructor.name.last}`;
 
   const avatarUrl =
-    instructor.picture?.thumbnail ||
+    instructor.picture?.large ||
     `https://ui-avatars.com/api/?name=${displayName.replace(
       " ",
       "+"
-    )}&background=E5E7EB&color=1F2937`;
+    )}&background=EBF4FF&color=7F9CF5`;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow text-center relative border hover:shadow-lg transition-shadow">
-      <button className="absolute top-1 right-2 text-gray-400 hover:text-red-500 text-xl font-bold">
-        &times;
-      </button>
+      {isCreator && (
+        <button
+          onClick={onRemove}
+          className="absolute top-1 right-2 text-gray-400 hover:text-red-500 text-xl font-bold"
+          aria-label="Remover instrutor"
+        >
+          &times;
+        </button>
+      )}
       <img
         src={avatarUrl}
         alt={`Avatar de ${displayName}`}
@@ -26,4 +34,5 @@ function InstructorCard({ instructor }) {
     </div>
   );
 }
+
 export default InstructorCard;
