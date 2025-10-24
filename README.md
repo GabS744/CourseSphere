@@ -41,4 +41,4 @@ Siga os passos abaixo para executar o projeto localmente.
         ```
         *A aplicação estará disponível em `http://localhost:5173`.*
 
-  * **Para Fazer Login utilize qualquer usuario do arquivo db.sjon**
+  * **Para Fazer Login utilize qualquer usuario do arquivo db.json**
