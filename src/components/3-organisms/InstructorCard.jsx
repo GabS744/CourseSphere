@@ -1,5 +1,3 @@
-import React from "react";
-
 function InstructorCard({ instructor, isCreator, onRemove }) {
   const displayName =
     typeof instructor.name === "string"

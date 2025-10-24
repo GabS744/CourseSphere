@@ -1,6 +1,3 @@
-import React from "react";
-
-// Função auxiliar para definir a cor da tag de status
 const getStatusClass = (status) => {
   switch (status) {
     case "published":

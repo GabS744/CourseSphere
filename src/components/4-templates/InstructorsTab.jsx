@@ -1,6 +1,5 @@
-import React from "react";
 import InstructorCard from "../3-organisms/InstructorCard.jsx";
-import Button from "../1-atoms/Button.jsx"; // 1. Importe o nosso átomo Button
+import Button from "../1-atoms/Button.jsx"; 
 
 function InstructorsTab({
   course,
@@ -16,7 +15,7 @@ function InstructorsTab({
           Instrutores do Curso
         </h3>
         {isCreator && (
-          // 2. Substitua o <button> pelo nosso componente <Button />
+         
           <Button onClick={onManage} variant="primary">
             Gerenciar Instrutores
           </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import FormField from "../2-molecules/FormField.jsx";
@@ -7,14 +7,14 @@ import Button from "../1-atoms/Button.jsx";
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // 1. Crie o estado de loading
+  const [loading, setLoading] = useState(false); /
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // 2. Inicia o carregamento
+    setLoading(true); 
 
     const success = await login(email, password);
 
@@ -22,7 +22,7 @@ function LoginForm() {
       navigate("/");
     }
 
-    setLoading(false); // 3. Finaliza o carregamento (seja sucesso ou erro)
+    setLoading(false); 
   };
 
   return (

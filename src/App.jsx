@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,10 +52,10 @@ function App() {
         </Route>
       </Routes>
 
-      {/* A CORREÇÃO ESTÁ AQUI */}
+     
       <ToastContainer
-        className="z-999" // Adicione esta classe
-        toastClassName="z-[9999]" // E esta também, para cada notificação
+        className="z-999" 
+        toastClassName="z-[9999]" 
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}

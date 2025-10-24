@@ -1,11 +1,11 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // 1. Ao iniciar, tente buscar o usuário do localStorage
+
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
       );
 
       if (foundUser) {
-        // 2. Ao logar, salve o usuário no localStorage
+
         localStorage.setItem("user", JSON.stringify(foundUser));
         setUser(foundUser);
         return foundUser;

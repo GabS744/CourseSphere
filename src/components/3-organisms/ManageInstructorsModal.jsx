@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   getSuggestedUsers,
   findUserByEmail,
@@ -47,11 +47,9 @@ function ManageInstructorsModal({ course, onClose, onAddInstructor }) {
 
   const renderUserList = (users) => {
     return users.map((user, index) => {
-      // --- A CORREÇÃO ESTÁ AQUI ---
-      // Verificamos se 'user.id' existe E não é um objeto.
+
       const isInternalUser = user.id && typeof user.id !== "object";
 
-      // Esta lógica agora funciona corretamente para ambos os tipos de usuário
       const displayName = isInternalUser
         ? user.name
         : `${user.name.first} ${user.name.last}`;
@@ -60,7 +58,6 @@ function ManageInstructorsModal({ course, onClose, onAddInstructor }) {
           `https://ui-avatars.com/api/?name=${displayName.replace(" ", "+")}`
         : user.picture.thumbnail;
 
-      // Usamos uma chave única e garantida para cada tipo de usuário
       const uniqueKey = isInternalUser ? user.id : user.login?.uuid || index;
 
       return (
