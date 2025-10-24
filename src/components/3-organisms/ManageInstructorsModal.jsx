@@ -4,7 +4,7 @@ import {
   findUserByEmail,
 } from "../../services/userService.js";
 
-function ManageInstructorsModal({ course, onClose, onAddInstructor }) {
+function ManageInstructorsModal({ onClose, onAddInstructor }) {
   const [suggestions, setSuggestions] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { updateLesson } from "../../services/lessonService.js";
 import Button from "../1-atoms/Button.jsx";
 import Label from "../1-atoms/Label.jsx";

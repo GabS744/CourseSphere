@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { createLesson } from "../../services/lessonService.js";
 import Button from "../1-atoms/Button.jsx";
 import Label from "../1-atoms/Label.jsx";
-import Textarea from "../1-atoms/Textarea.jsx";
 
 function CreateLessonModal({ courseId, onClose, onLessonCreated }) {
   const { user } = useAuth();
@@ -125,4 +124,3 @@ function CreateLessonModal({ courseId, onClose, onLessonCreated }) {
 }
 
 export default CreateLessonModal;
-s

@@ -363,17 +363,6 @@
         "1",
         "1b07"
       ]
-    },
-    {
-      "id": "3dbe",
-      "name": "teste",
-      "description": "teste2",
-      "start_date": "2025-12-30",
-      "end_date": "2026-12-30",
-      "creator_id": "2a745644-2647-4087-9c7e-45cee13ccbd8",
-      "instructors": [
-        "2a745644-2647-4087-9c7e-45cee13ccbd8"
-      ]
     }
   ],
   "lessons": [

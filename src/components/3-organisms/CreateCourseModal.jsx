@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { createCourse } from "../../services/courseService.js";
+import { toast } from "react-toastify";
 import Button from "../1-atoms/Button.jsx";
 import Label from "../1-atoms/Label.jsx";
 import Textarea from "../1-atoms/Textarea.jsx";
 
 function CreateCourseModal({ onClose, onCourseCreated }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -13,33 +17,36 @@ function CreateCourseModal({ onClose, onCourseCreated }) {
     end_date: "",
   });
 
-  const { user } = useAuth();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (new Date(formData.end_date) <= new Date(formData.start_date)) {
+      toast.error("A data final deve ser posterior à data de início.");
+      return;
+    }
+
     const newCourse = {
       ...formData,
       creator_id: user.id,
       instructors: [user.id],
     };
+
     try {
       await createCourse(newCourse);
-      alert("Curso criado com sucesso!");
+      toast.success("Curso criado com sucesso!");
       if (onCourseCreated) {
         onCourseCreated();
       }
-      onClose();
+      onClose(true);
+      navigate("/");
     } catch (error) {
       console.error("Erro ao criar curso:", error);
-      alert("Falha ao criar o curso.");
+      toast.error("Falha ao criar o curso.");
     }
   };
 
@@ -49,7 +56,7 @@ function CreateCourseModal({ onClose, onCourseCreated }) {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Criar Novo Curso</h2>
           <button
-            onClick={onClose}
+            onClick={() => onClose(false)}
             className="text-gray-500 hover:text-gray-800 text-3xl font-bold"
           >
             &times;
@@ -63,7 +70,7 @@ function CreateCourseModal({ onClose, onCourseCreated }) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-2 border rounded-lg"
               required
             />
           </div>
@@ -99,7 +106,7 @@ function CreateCourseModal({ onClose, onCourseCreated }) {
               />
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-4">
             <Button type="submit">Salvar Curso</Button>
           </div>
         </form>
@@ -107,4 +114,5 @@ function CreateCourseModal({ onClose, onCourseCreated }) {
     </div>
   );
 }
+
 export default CreateCourseModal;
