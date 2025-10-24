@@ -3,7 +3,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // Adicione esta seção
+ 
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
       },
