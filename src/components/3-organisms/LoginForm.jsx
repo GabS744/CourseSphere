@@ -1,51 +1,56 @@
-import { useState } from "react";
-import Button from "../1-atoms/Button";
-import FormField from "../2-molecules/FormField";
-import { useAuth } from "../../contexts/AuthContext.jsx";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import FormField from "../2-molecules/FormField.jsx";
+import Button from "../1-atoms/Button.jsx";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // 1. Crie o estado de loading
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // 2. Inicia o carregamento
 
-    const loggedInUser = await login(email, password);
+    const success = await login(email, password);
 
-    if (loggedInUser) {
-      console.log("Login bem-sucedido! Redirecionando...", loggedInUser);
-
+    if (success) {
       navigate("/");
     }
+
+    setLoading(false); // 3. Finaliza o carregamento (seja sucesso ou erro)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-12">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center font-sans">
+    <form onSubmit={handleSubmit} className="p-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Acesse sua conta
       </h2>
       <FormField
-        label="E-mail"
+        label="E-MAIL"
         type="email"
-        value={email}
         placeholder="Digite o seu e-mail..."
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <FormField
-        label="Senha"
+        label="SENHA"
         type="password"
-        value={password}
         placeholder="Digite a sua senha..."
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <div className="mt-6 flex justify-center">
-        <Button>Entrar</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Entrando..." : "ENTRAR"}
+        </Button>
       </div>
     </form>
   );
 }
+
 export default LoginForm;

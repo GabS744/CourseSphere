@@ -1,22 +1,25 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import CourseDetailPage from "./pages/CourseDetailPage.jsx";
-
 import Navbar from "./components/3-organisms/Navbar.jsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import CreateCourseModal from "./components/3-organisms/CreateCourseModal.jsx";
 
 const Layout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refetchCourses, setRefetchCourses] = useState(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
+
   const handleCloseModal = (courseWasCreated) => {
     setIsModalOpen(false);
-    if (courseWasCreated) {
-      window.location.reload();
+    if (courseWasCreated && refetchCourses) {
+      refetchCourses();
     }
   };
 
@@ -24,26 +27,47 @@ const Layout = () => {
     <>
       <Navbar onOpenCreateModal={handleOpenModal} />
       <main className="container mx-auto px-6 py-8">
-        <Outlet />
+        <Outlet context={{ setRefetchCourses }} />
       </main>
-
-      {isModalOpen && <CreateCourseModal onClose={handleCloseModal} />}
+      {isModalOpen && (
+        <CreateCourseModal
+          onClose={handleCloseModal}
+          onCourseCreated={refetchCourses}
+        />
+      )}
     </>
   );
 };
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-
-      <Route path="/" element={<Layout />}>
-        <Route element={<ProtectedRoute />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="cursos/:courseId" element={<CourseDetailPage />} />
+    <>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route element={<ProtectedRoute />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="cursos/:courseId" element={<CourseDetailPage />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+
+      {/* A CORREÇÃO ESTÁ AQUI */}
+      <ToastContainer
+        className="z-999" // Adicione esta classe
+        toastClassName="z-[9999]" // E esta também, para cada notificação
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
   );
 }
 

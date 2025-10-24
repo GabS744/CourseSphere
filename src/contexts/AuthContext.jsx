@@ -1,11 +1,15 @@
-import { createContext, useState, useContext } from "react";
-
+import { createContext, useState, useContext, useEffect } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  // 1. Ao iniciar, tente buscar o usuário do localStorage
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   const login = async (email, password) => {
     try {
@@ -15,20 +19,24 @@ export function AuthProvider({ children }) {
       );
 
       if (foundUser) {
+        // 2. Ao logar, salve o usuário no localStorage
+        localStorage.setItem("user", JSON.stringify(foundUser));
         setUser(foundUser);
         return foundUser;
       } else {
-        alert("E-mail ou senha incorretos.");
+        toast.error("E-mail ou senha incorretos.");
         return null;
       }
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
-      alert("Ocorreu um erro no servidor. Tente novamente mais tarde.");
+      toast.error("Ocorreu um erro no servidor. Tente novamente mais tarde.");
       return null;
     }
   };
 
   const logout = () => {
+
+    localStorage.removeItem("user");
     setUser(null);
   };
 
