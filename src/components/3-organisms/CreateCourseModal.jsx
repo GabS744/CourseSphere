@@ -1,13 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { createCourse } from "../../services/courseService.js";
-
 import Button from "../1-atoms/Button.jsx";
-import FormField from "../2-molecules/FormField.jsx";
 import Label from "../1-atoms/Label.jsx";
 import Textarea from "../1-atoms/Textarea.jsx";
 
-function CreateCourseModal({ onClose }) {
+function CreateCourseModal({ onClose, onCourseCreated }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -35,7 +33,10 @@ function CreateCourseModal({ onClose }) {
     try {
       await createCourse(newCourse);
       alert("Curso criado com sucesso!");
-      onClose(true);
+      if (onCourseCreated) {
+        onCourseCreated();
+      }
+      onClose();
     } catch (error) {
       console.error("Erro ao criar curso:", error);
       alert("Falha ao criar o curso.");
@@ -48,22 +49,24 @@ function CreateCourseModal({ onClose }) {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Criar Novo Curso</h2>
           <button
-            onClick={() => onClose(false)}
+            onClick={onClose}
             className="text-gray-500 hover:text-gray-800 text-3xl font-bold"
           >
             &times;
           </button>
         </div>
         <form onSubmit={handleSubmit}>
-          <FormField
-            label="Nome do Curso"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
+          <div className="mb-4">
+            <Label>Nome do Curso</Label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
           <div className="mb-4">
             <Label>Descrição</Label>
             <Textarea
@@ -72,7 +75,6 @@ function CreateCourseModal({ onClose }) {
               onChange={handleChange}
             />
           </div>
-
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div>
               <Label>Data de Início</Label>
@@ -97,14 +99,12 @@ function CreateCourseModal({ onClose }) {
               />
             </div>
           </div>
-
           <div className="flex justify-end">
-            <Button>Salvar Curso</Button>
+            <Button type="submit">Salvar Curso</Button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
 export default CreateCourseModal;
